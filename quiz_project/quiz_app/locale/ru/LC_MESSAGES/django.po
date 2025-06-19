@@ -141,3 +141,12 @@ msgstr "Зарегистрироваться"
 
 msgid "Do not have an account?"
 msgstr "Нет аккаунта?"
+
+msgid "Create Account"
+msgstr "Создать аккаунт"
+
+msgid "Already have an account?"
+msgstr "Уже есть аккаунт?"
+
+msgid "Login here"
+msgstr "Войти здесь"

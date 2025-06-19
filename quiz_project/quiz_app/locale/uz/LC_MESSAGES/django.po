@@ -141,3 +141,13 @@ msgstr "Ro‘yxatdan o‘tish"
 
 msgid "Do not have an account?"
 msgstr "Hisobingiz yo‘qmi?"
+
+msgid "Create Account"
+msgstr "Hisob yaratish"
+
+msgid "Already have an account?"
+msgstr "Hisobingiz bormi?"
+
+msgid "Login here"
+msgstr "Bu yerda kiring"
+

@@ -1,3 +1,5 @@
+{% load i18n %}
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -45,13 +47,13 @@
 </head>
 <body>
     <div class="signup-container">
-        <h2>Create Account</h2>
+        <h2>{% trans 'Create Account' %}</h2>
         <form method="post">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit">Sign Up</button>
+            <button type="submit">{% trans 'Sign up' %}</button>
         </form>
-        <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+        <p>{% trans 'Already have an account?' %} <a href="{% url 'login' %}">{% trans 'Login here' %}</a></p>
     </div>
 </body>
 </html>
