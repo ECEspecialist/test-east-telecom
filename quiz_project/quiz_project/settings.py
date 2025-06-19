@@ -14,7 +14,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'your-dev-secret-key')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'your-app-name.up.railway.app']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'test-east-telecom-production.up.railway.app']
 
 # Application definition
 INSTALLED_APPS = [
