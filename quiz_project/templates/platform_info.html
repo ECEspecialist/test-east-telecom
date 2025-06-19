@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block content %}
+  <h2>{% trans "How the Platform Works" %}</h2>
+
+  <h3>{% trans "Overview" %}</h3>
+  <p>{% trans "This system allows departments to manage test sets..." %}</p>
+
+  <h3>{% trans "User Roles" %}</h3>
+  <ul>
+    <li><strong>{% trans "Admin/Staff" %}</strong> – {% trans "Can create departments and tests" %}</li>
+    <li><strong>{% trans "User" %}</strong> – {% trans "Can take tests and download results" %}</li>
+  </ul>
+
+  <h3>{% trans "Workflow" %}</h3>
+  <ol>
+    <li>{% trans "Admin creates departments" %}</li>
+    <li>{% trans "Admin creates test sets and questions" %}</li>
+    <li>{% trans "Users take tests by department" %}</li>
+    <li>{% trans "System calculates score and generates PDF" %}</li>
+  </ol>
+
+  <h3>{% trans "Multi-language Support" %}</h3>
+  <p>{% trans "The interface is available in English, Uzbek, and Russian." %}</p>
+
+  <h3>{% trans "PDF Results" %}</h3>
+  <p>{% trans "PDF files include detailed test result information with timestamps." %}</p>
+{% endblock %}

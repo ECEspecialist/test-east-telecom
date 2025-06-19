@@ -30,6 +30,9 @@
             left: 0;
             height: 100vh;
             overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .main {
@@ -75,6 +78,9 @@
             display: flex;
             gap: 40px;
         }
+        .content{
+            padding: 35px;
+        }
     </style>
 </head>
 <body>
@@ -87,20 +93,27 @@
     </div> -->
     
     <div class="sidebar">
-        <img src="/static/images/company_logo_white.png" class="company_logo_sidebar" alt="Company Logo">
-        
-        <a href="{% url 'dashboard' %}" {% if request.path == '/dashboard/' %}style="font-weight:bold;"{% endif %}>
-            {% trans "Dashboard" %}
+        <div class="sidebar-top">
+            <img src="/static/images/company_logo_white.png" class="company_logo_sidebar" alt="Company Logo">
+            
+            <a href="{% url 'dashboard' %}" {% if request.path == '/dashboard/' %}style="font-weight:bold;"{% endif %}>
+                {% trans "Dashboard" %}
+            </a>
+
+            {% for department in departments %}
+                <a href="{% url 'department_quizzes' department.id %}"
+                {% if request.path == '/department/'|add:department.id|stringformat:"s"|add:'/quizzes/' %}
+                    style="font-weight:bold;"
+                {% endif %}>
+                {{ department.name }}
+                </a>
+            {% endfor %}
+        </div>
+        <a href="{% url 'platform_info' %}"
+            {% if request.path == '/platform-info/' %}style="font-weight:bold;"{% endif %}>
+            {% trans "Platform Info" %}
         </a>
 
-        {% for department in departments %}
-            <a href="{% url 'department_quizzes' department.id %}"
-            {% if request.path == '/department/'|add:department.id|stringformat:"s"|add:'/quizzes/' %}
-                style="font-weight:bold;"
-            {% endif %}>
-            {{ department.name }}
-            </a>
-        {% endfor %}
     </div>
 
 
@@ -108,16 +121,16 @@
         <div class="topbar">
             <span>{% trans "Welcome" %}, {{ request.user.username }}</span>
             <div class="topbar_right_container">
-                <form action="{% url 'set_language' %}" method="post">
+                <form action="{% url 'set_language' %}" method="post" id="language-form">
                     {% csrf_token %}
-                    <select name="language">
+                    <select name="language" onchange="document.getElementById('language-form').submit();">
                         {% get_current_language as LANGUAGE_CODE %}
                         <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>{% trans "English" %}</option>
                         <option value="uz" {% if LANGUAGE_CODE == 'uz' %}selected{% endif %}>{% trans "Uzbek" %}</option>
                         <option value="ru" {% if LANGUAGE_CODE == 'ru' %}selected{% endif %}>{% trans "Russian" %}</option>
                     </select>
-                    <input type="submit" value="{% trans 'Change language' %}">
                 </form>
+
 
 
 

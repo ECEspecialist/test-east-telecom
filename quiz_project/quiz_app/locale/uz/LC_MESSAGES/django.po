@@ -41,8 +41,6 @@ msgstr "Variant matni"
 msgid "Is Correct"
 msgstr "To‘g‘ri"
 
-msgid "User"
-msgstr "Foydalanuvchi"
 
 msgid "Quiz"
 msgstr "Test"
@@ -151,3 +149,56 @@ msgstr "Hisobingiz bormi?"
 msgid "Login here"
 msgstr "Bu yerda kiring"
 
+msgid "Platform Info"
+msgstr "Platforma haqida"
+
+msgid "How the Platform Works"
+msgstr "Platforma qanday ishlaydi"
+
+msgid "Overview"
+msgstr "Umumiy ma'lumot"
+
+msgid "This system allows departments to manage test sets..."
+msgstr "Ushbu tizim bo‘limlarga test to‘plamlarini boshqarish imkonini beradi..."
+
+msgid "User Roles"
+msgstr "Foydalanuvchi rollari"
+
+msgid "Admin/Staff"
+msgstr "Admin/xodim"
+
+msgid "Can create departments and tests"
+msgstr "Bo‘limlar va testlar yaratishi mumkin"
+
+msgid "User"
+msgstr "Foydalanuvchi"
+
+msgid "Can take tests and download results"
+msgstr "Testlarni bajarishi va natijalarni yuklab olishi mumkin"
+
+msgid "Workflow"
+msgstr "Ish jarayoni"
+
+msgid "Admin creates departments"
+msgstr "Admin bo‘limlar yaratadi"
+
+msgid "Admin creates test sets and questions"
+msgstr "Admin testlar va savollar yaratadi"
+
+msgid "Users take tests by department"
+msgstr "Foydalanuvchilar bo‘limlar bo‘yicha testlarni topshiradi"
+
+msgid "System calculates score and generates PDF"
+msgstr "Tizim ballarni hisoblaydi va PDF hosil qiladi"
+
+msgid "Multi-language Support"
+msgstr "Ko‘p tilli qo‘llab-quvvatlash"
+
+msgid "The interface is available in English, Uzbek, and Russian."
+msgstr "Interfeys ingliz, o‘zbek va rus tillarida mavjud."
+
+msgid "PDF Results"
+msgstr "PDF natijalar"
+
+msgid "PDF files include detailed test result information with timestamps."
+msgstr "PDF fayllar vaqt belgilari bilan test natijalarining batafsil ma'lumotlarini o‘z ichiga oladi."

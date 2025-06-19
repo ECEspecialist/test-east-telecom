@@ -227,3 +227,10 @@ def change_status(request, result_id):
         result.save()
 
     return HttpResponseRedirect(reverse('dashboard'))
+
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+
+@login_required
+def platform_info_view(request):
+    return render(request, 'platform_info.html')

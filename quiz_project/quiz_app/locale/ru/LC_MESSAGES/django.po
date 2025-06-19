@@ -150,3 +150,55 @@ msgstr "Уже есть аккаунт?"
 
 msgid "Login here"
 msgstr "Войти здесь"
+
+msgid "Platform Info"
+msgstr "О платформе"
+
+msgid "How the Platform Works"
+msgstr "Как работает платформа"
+
+msgid "Overview"
+msgstr "Обзор"
+
+msgid "This system allows departments to manage test sets..."
+msgstr "Эта система позволяет отделам управлять наборами тестов..."
+
+msgid "User Roles"
+msgstr "Роли пользователей"
+
+msgid "Admin/Staff"
+msgstr "Админ/персонал"
+
+msgid "Can create departments and tests"
+msgstr "Могут создавать отделы и тесты"
+
+
+msgid "Can take tests and download results"
+msgstr "Может проходить тесты и скачивать результаты"
+
+msgid "Workflow"
+msgstr "Рабочий процесс"
+
+msgid "Admin creates departments"
+msgstr "Админ создает отделы"
+
+msgid "Admin creates test sets and questions"
+msgstr "Админ создает наборы тестов и вопросы"
+
+msgid "Users take tests by department"
+msgstr "Пользователи проходят тесты по отделам"
+
+msgid "System calculates score and generates PDF"
+msgstr "Система подсчитывает баллы и генерирует PDF"
+
+msgid "Multi-language Support"
+msgstr "Многоязычная поддержка"
+
+msgid "The interface is available in English, Uzbek, and Russian."
+msgstr "Интерфейс доступен на английском, узбекском и русском языках."
+
+msgid "PDF Results"
+msgstr "PDF результаты"
+
+msgid "PDF files include detailed test result information with timestamps."
+msgstr "PDF-файлы содержат подробную информацию о результатах теста с отметками времени."
