@@ -1,0 +1,143 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-06-19 10:12+0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
+"(n%100>=11 && n%100<=14)? 2 : 3);\n"
+
+msgid "Department Name"
+msgstr "Название отдела"
+
+msgid "Test Title"
+msgstr "Название теста"
+
+msgid "Department"
+msgstr "Отделение"
+
+msgid "Quiz Set"
+msgstr "Набор тестов"
+
+msgid "Question Text"
+msgstr "Текст вопроса"
+
+msgid "Question"
+msgstr "Вопрос"
+
+msgid "Choice Text"
+msgstr "Вариант ответа"
+
+msgid "Is Correct"
+msgstr "Правильный"
+
+msgid "User"
+msgstr "Пользователь"
+
+msgid "Quiz"
+msgstr "Тест"
+
+msgid "Score"
+msgstr "Баллы"
+
+msgid "Total Questions"
+msgstr "Всего вопросов"
+
+msgid "Time Taken"
+msgstr "Затраченное время"
+
+msgid "Start Time"
+msgstr "Время начала"
+
+msgid "End Time"
+msgstr "Время окончания"
+
+msgid "Created At"
+msgstr "Дата создания"
+
+msgid "PDF File"
+msgstr "Файл PDF"
+
+msgid "Status"
+msgstr "Статус"
+
+msgid "Pass"
+msgstr "Сдал"
+
+msgid "Fail"
+msgstr "Не сдал"
+
+msgid "Dashboard"
+msgstr "Панель управления"
+
+msgid "Network team"
+msgstr "Сетевой отдел"
+
+msgid "Facility team"
+msgstr "Хозяйственный отдел"
+
+msgid "Welcome"
+msgstr "Добро пожаловать"
+
+msgid "English"
+msgstr "Английский"
+
+msgid "Uzbek"
+msgstr "Узбекский"
+
+msgid "Russian"
+msgstr "Русский"
+
+msgid "Logout"
+msgstr "Выйти"
+
+msgid "Change language"
+msgstr "Изменить язык"
+
+msgid "Welcome to the Test Dashboard"
+msgstr "Добро пожаловать в панель управления тестами"
+
+msgid "Select a department from the sidebar to begin."
+msgstr "Выберите отдел в боковой панели, чтобы начать."
+
+msgid "Dashboard - Test Results"
+msgstr "Панель управления — Результаты теста"
+
+msgid "Timestamp"
+msgstr "Метка времени"
+
+msgid "Download PDF"
+msgstr "Скачать PDF"
+
+msgid "No PDF available yet."
+msgstr "PDF пока недоступен."
+
+msgid "Test Sets"
+msgstr "Наборы тестов"
+
+msgid "No tests available for this department."
+msgstr "Для этого отдела нет доступных тестов."
+
+msgid "No test results found."
+msgstr "Результаты теста не найдены."
+
+msgid "Login"
+msgstr "Войти"
+
+msgid "Sign up"
+msgstr "Зарегистрироваться"
+
+msgid "Do not have an account?"
+msgstr "Нет аккаунта?"

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2 style="color: black;" >Quiz Result: {{ quiz.title }}</h2>
+  <p style="color: black;" >Your score: {{ score }} / {{ total_questions }}</p>
+
+  {% if result.pdf_file %}
+      <a style="color: black;" href="{% url 'download_result_pdf' result.id %}">Download PDF</a>
+  {% else %}
+      <span style="color: black;">No PDF available yet.</span>
+  {% endif %}
+
+  <br>
+  <a href="{% url 'dashboard' %}" style="color: black;">Back to Dashboard</a>
+{% endblock %}

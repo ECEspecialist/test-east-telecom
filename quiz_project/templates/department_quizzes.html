@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block content %}
+  <h2 style="color: black;">{{ department.name }} - {% trans 'Test Sets' %}</h2>
+  {% if quizzes %}
+    <ul style="color: black;">
+      {% for quiz in quizzes %}
+        <li><a href="{% url 'start_quiz' quiz.id %}" style="color: black;">{{ quiz.title }}</a></li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p style="color: black;">{% trans 'No tests available for this department.' %}</p>
+  {% endif %}
+{% endblock %}
