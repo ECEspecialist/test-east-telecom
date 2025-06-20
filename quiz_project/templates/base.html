@@ -81,6 +81,9 @@
         .content{
             padding: 35px;
         }
+        .logo-wrap{
+            height: 120px;
+        }
     </style>
 </head>
 <body>
@@ -94,8 +97,9 @@
     
     <div class="sidebar">
         <div class="sidebar-top">
-            <img src="/static/images/company_logo_white.png" class="company_logo_sidebar" alt="Company Logo">
-            
+            <div class="logo-wrap">
+                <img src="/static/images/company_logo_white.png" class="company_logo_sidebar" alt="Company Logo">
+            </div>
             <a href="{% url 'dashboard' %}" {% if request.path == '/dashboard/' %}style="font-weight:bold;"{% endif %}>
                 {% trans "Dashboard" %}
             </a>
