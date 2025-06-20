@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
-
+{% load i18n %}
 {% block content %}
   <h2>{{ quiz.title }} - Question {{ question_number }} of {{ total_questions }}</h2>
-  <p>{{ question.text }}</p>
+  <p style="margin-top: 5px; margin-bottom: 5px;">{{ question.text }}</p>
 
   {% if error_message %}
     <p style="color: red;">{{ error_message }}</p>
@@ -18,11 +18,11 @@
         </label>
       </div>
     {% endfor %}
-    <button type="submit">
+    <button type="submit" style="margin-top: 12px;" >
       {% if question_number == total_questions %}
-        Finish
+        {% trans 'Finish' %}
       {% else %}
-        Next
+        {% trans 'Next' %}
       {% endif %}
     </button>
   </form>

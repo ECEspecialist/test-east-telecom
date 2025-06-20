@@ -202,3 +202,18 @@ msgstr "PDF результаты"
 
 msgid "PDF files include detailed test result information with timestamps."
 msgstr "PDF-файлы содержат подробную информацию о результатах теста с отметками времени."
+
+msgid "Test Result"
+msgstr "Результат теста"
+
+msgid "Your score"
+msgstr "Ваш результат"
+
+msgid "Back to Dashboard"
+msgstr "Назад к панели управления"
+
+msgid "Finish"
+msgstr "Завершить"
+
+msgid "Next"
+msgstr "Далее"

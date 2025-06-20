@@ -202,3 +202,18 @@ msgstr "PDF natijalar"
 
 msgid "PDF files include detailed test result information with timestamps."
 msgstr "PDF fayllar vaqt belgilari bilan test natijalarining batafsil ma'lumotlarini o‘z ichiga oladi."
+
+msgid "Test Result"
+msgstr "Test natijasi"
+
+msgid "Your score"
+msgstr "Sizning ballingiz"
+
+msgid "Back to Dashboard"
+msgstr "Boshqaruv paneliga qaytish"
+
+msgid "Finish"
+msgstr "Tugatish"
+
+msgid "Next"
+msgstr "Keyingi"
