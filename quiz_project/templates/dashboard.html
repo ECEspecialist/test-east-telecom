@@ -2,66 +2,116 @@
 {% load i18n %}
 
 {% block content %}
-  <div>
-    <h2 style="color: black;">{% trans 'Welcome to the Test Dashboard' %}</h2>
-    <p style="color: black;">{% trans 'Select a department from the sidebar to begin.' %}</p>
+<div>
+  <h2 style="color: black;">{% trans 'Welcome to the Test Dashboard' %}</h2>
+  <p style="color: black;">{% trans 'Select a department from the sidebar to begin.' %}</p>
 
-    <br><br>
+  <br><br>
 
-    <h2 style="color: black;">{% trans 'Dashboard - Test Results' %}</h2>
+  <h2 style="color: black;">{% trans 'Dashboard - Test Results' %}</h2>
 
-    {% if results %}
-      <table border="1" cellpadding="10" style="width: 100%; color: black; background-color: #f9f9f9;">
-        <thead>
-          <tr>
-            {% if request.user.is_staff %}<th>{% trans 'User' %}</th>{% endif %}
-            <th>{% trans "Department" %}</th>
-            <th>{% trans 'Test Title' %}</th>
-            <th>{% trans 'Score' %}</th>
-            <th>{% trans 'Status' %}</th>
-            <th>{% trans 'Time Taken' %}</th>
-            <th>{% trans 'Timestamp' %}</th>
-            <th>PDF</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for result in results %}
-          <tr>
-            {% if request.user.is_staff %}
-              <td>{{ result.user.username }}</td>
+  {% if results_data %}
+  <table border="1" cellpadding="10" style="width: 100%; color: black; background-color: #f9f9f9;">
+    <thead>
+      <tr>
+        {% if request.user.is_staff %}<th>{% trans 'User' %}</th>{% endif %}
+        <th>{% trans "Department" %}</th>
+        <th>{% trans 'Test Title' %}</th>
+        <th>{% trans 'MCQ %' %}</th>
+        <th>{% trans 'Written %' %}</th>
+        <th>{% trans 'Status' %}</th>
+        <th>{% trans 'Time Taken' %}</th>
+        <th>{% trans 'Timestamp' %}</th>
+        <th>PDF</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in results_data %}
+      <tr>
+        {% if request.user.is_staff %}
+        <td>{{ item.result.user.username }}</td>
+        {% endif %}
+        <td>{{ item.result.department.name }}</td>
+        <td>{{ item.result.quiz.title }}</td>
+
+        <td>
+          {% if item.mcq_percent %}
+            {{ item.mcq_percent|floatformat:2 }}%
+          {% else %}
+            0%
+          {% endif %}
+        </td>
+
+        <td>
+          {% if not item.written_exists %}
+            <span style="color: gray;">N/A</span>
+          {% else %}
+            {% if item.written_percent is None %}
+              <span style="color: red; font-weight: bold;">{% trans 'Not Graded' %} 🔴</span>
+            {% elif item.written_percent < 100 %}
+              <span style="color: orange; font-weight: bold;">{{ item.written_percent|floatformat:2 }}% 🟡</span>
+            {% else %}
+              <span style="color: green; font-weight: bold;">{{ item.written_percent|floatformat:2 }}% 🟢</span>
             {% endif %}
-            <td>{{ result.department.name }}</td>
-            <td>{{ result.quiz.title }}</td>
-            <td>{{ result.score }} / {{ result.total_questions }}</td>
-            <td>
-              {% if request.user.is_staff %}
-                <form method="post" action="{% url 'change_status' result.id %}">
-                  {% csrf_token %}
-                  <select name="status" onchange="this.form.submit()">
-                    <option value="Pass" {% if result.status == "Pass" %}selected{% endif %}>Pass</option>
-                    <option value="Fail" {% if result.status == "Fail" %}selected{% endif %}>Fail</option>
-                  </select>
-                </form>
-              {% else %}
-                {{ result.status }}
-              {% endif %}
-            </td>
-            <td>{{ result.time_taken }}</td>
-            <td>{{ result.created_at|date:"Y-m-d H:i" }}</td>
-            <td>
-              {% if result.pdf_file %}
-                <a href="{% url 'download_result_pdf' result.id %}" style="color: black;" target="_blank">{% trans 'Download PDF' %}</a>
-              {% else %}
-                <span>{% trans 'No PDF available yet.' %}</span>
-              {% endif %}
-            </td>
 
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    {% else %}
-      <p style="color: black;">{% trans 'No test results found.' %}</p>
-    {% endif %}
-  </div>
+            {% if request.user.is_staff %}
+              <a style="color: black;" href="{% url 'grade_written' item.result.id %}">{% trans 'Grade' %}</a>
+            {% endif %}
+          {% endif %}
+        </td>
+
+        <td>
+          {% if request.user.is_staff %}
+            {% if item.written_exists and item.written_percent is None %}
+              <span style="color: gray;">{% trans 'Grade first' %}</span>
+            {% else %}
+              <form method="post" action="{% url 'change_status' item.result.id %}">
+                {% csrf_token %}
+                <select name="status" onchange="this.form.submit()">
+                  <option value="Pending" {% if item.result.status == "Pending" %}selected{% endif %} style="color: gray;">Pending</option>
+                  <option value="Pass" {% if item.result.status == "Pass" %}selected{% endif %} style="color: green;">Pass</option>
+                  <option value="Fail" {% if item.result.status == "Fail" %}selected{% endif %} style="color: red;">Fail</option>
+                </select>
+              </form>
+            {% endif %}
+          {% else %}
+            {% if item.result.status == "Pass" %}
+              <span style="color: green; font-weight: bold;">Pass ✅</span>
+            {% elif item.result.status == "Fail" %}
+              <span style="color: red; font-weight: bold;">Fail ❌</span>
+            {% else %}
+              <span style="color: gray; font-weight: bold;">Pending ⏳</span>
+            {% endif %}
+          {% endif %}
+        </td>
+
+        <td>{{ item.result.time_taken }}</td>
+        <td>{{ item.result.created_at|date:"Y-m-d H:i" }}</td>
+
+        <td>
+          {% if item.result.status != 'Pending' %}
+            {% if item.result.pdf_file %}
+              <a href="{% url 'download_result_pdf' item.result.id %}" style="color: black;" target="_blank">{% trans 'Download PDF' %}</a>
+            {% elif request.user.is_staff %}
+              <form method="post" action="{% url 'generate_pdf' item.result.id %}">
+                {% csrf_token %}
+                <button type="submit">{% trans 'Generate PDF' %}</button>
+              </form>
+            {% else %}
+              <span>{% trans 'Waiting for PDF' %}</span>
+            {% endif %}
+          {% else %}
+            <span>{% trans 'Waiting for evaluation' %}</span>
+          {% endif %}
+        </td>
+
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  {% else %}
+  <p style="color: black;">{% trans 'No test results found.' %}</p>
+  {% endif %}
+</div>
 {% endblock %}

@@ -4,15 +4,19 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from django.utils import timezone
 from django.core.files import File
-from django.http import FileResponse, Http404, HttpResponseForbidden
-
-from .models import QuizSet, Question, Choice, QuizResult, Department
-
-from datetime import timedelta
+from django.http import FileResponse, Http404, HttpResponseForbidden, HttpResponseRedirect
+from django.urls import reverse
+from django.utils.translation import gettext_lazy as _
+from django.utils.timezone import localtime, make_aware
+from pytz import timezone as pytz_timezone
 from io import BytesIO
 from reportlab.pdfgen import canvas
+from datetime import timedelta
 
+from .models import QuizSet, Question, Choice, QuizResult, Department, UserAnswer
+from django.views.decorators.http import require_POST
 
+# ----------------- Signup -----------------
 def signup_view(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
@@ -25,13 +29,24 @@ def signup_view(request):
     return render(request, 'signup.html', {'form': form})
 
 
-from django.utils import timezone
-
+# ----------------- Quiz Flow -----------------
 @login_required
 def start_quiz(request, quiz_id):
     quiz = get_object_or_404(QuizSet, id=quiz_id)
+    start_time = timezone.now()
+
+    result = QuizResult.objects.create(
+        user=request.user,
+        quiz=quiz,
+        department=quiz.department,
+        start_time=start_time,
+        status='Pending'
+    )
+
+    request.session[f'quiz_{quiz_id}_result_id'] = result.id
     request.session[f'quiz_{quiz_id}_score'] = 0
-    request.session[f'quiz_{quiz_id}_start_time'] = timezone.now().isoformat()
+    request.session[f'quiz_{quiz_id}_start_time'] = start_time.isoformat()
+
     return redirect('quiz_question', quiz_id=quiz.id, question_number=1)
 
 
@@ -44,143 +59,139 @@ def quiz_question(request, quiz_id, question_number):
         return redirect('dashboard')
 
     question = questions[question_number - 1]
+    result_id = request.session.get(f'quiz_{quiz_id}_result_id')
+    result_instance = get_object_or_404(QuizResult, id=result_id)
 
     if request.method == 'POST':
-        selected_choice_id = request.POST.get('choice')
-        if selected_choice_id:
-            selected_choice = question.choices.filter(id=selected_choice_id).first()
-            if selected_choice and selected_choice.is_correct:
-                score_key = f'quiz_{quiz_id}_score'
-                current_score = request.session.get(score_key, 0)
-                request.session[score_key] = current_score + 1
-
-            if question_number == questions.count():
-                return redirect('quiz_result', quiz_id=quiz.id)
+        if question.question_type == 'MCQ':
+            selected_choice_id = request.POST.get('choice')
+            if selected_choice_id:
+                selected_choice = question.choices.filter(id=selected_choice_id).first()
+                UserAnswer.objects.create(
+                    user=request.user, question=question,
+                    selected_choice=selected_choice,
+                    quiz_result=result_instance
+                )
+                if selected_choice and selected_choice.is_correct:
+                    key = f'quiz_{quiz_id}_score'
+                    request.session[key] = request.session.get(key, 0) + 1
             else:
-                return redirect('quiz_question', quiz_id=quiz.id, question_number=question_number + 1)
-        else:
-            error_message = "Please select an answer."
-            return render(request, 'quiz_question.html', {
-                'quiz': quiz,
-                'question': question,
-                'question_number': question_number,
-                'total_questions': questions.count(),
-                'error_message': error_message,
-            })
+                return render(request, 'quiz_question.html', {
+                    'quiz': quiz, 'question': question, 'question_number': question_number,
+                    'total_questions': questions.count(), 'error_message': _("Please select an answer.")
+                })
+
+        elif question.question_type == 'TEXT':
+            written_answer = request.POST.get('written_answer', '').strip()
+            if written_answer:
+                UserAnswer.objects.create(
+                    user=request.user, question=question,
+                    written_answer=written_answer,
+                    quiz_result=result_instance
+                )
+            else:
+                return render(request, 'quiz_question.html', {
+                    'quiz': quiz, 'question': question, 'question_number': question_number,
+                    'total_questions': questions.count(), 'error_message': _("Please write your answer.")
+                })
+
+        if question_number == questions.count():
+            return redirect('quiz_result', quiz_id=quiz.id)
+        return redirect('quiz_question', quiz_id=quiz.id, question_number=question_number + 1)
 
     return render(request, 'quiz_question.html', {
-        'quiz': quiz,
-        'question': question,
-        'question_number': question_number,
-        'total_questions': questions.count(),
+        'quiz': quiz, 'question': question, 'question_number': question_number, 'total_questions': questions.count()
     })
 
-
-from datetime import timedelta
-from django.utils import timezone
-from django.utils.timezone import make_aware
-from .models import QuizResult
 
 @login_required
 def quiz_result(request, quiz_id):
     quiz = get_object_or_404(QuizSet, id=quiz_id)
-    score = request.session.get(f'quiz_{quiz_id}_score', 0)
+    score = request.session.pop(f'quiz_{quiz_id}_score', 0)
+    result_id = request.session.pop(f'quiz_{quiz_id}_result_id', None)
     total_questions = quiz.questions.count()
 
-    # Get start time from session
-    start_time_str = request.session.get(f'quiz_{quiz_id}_start_time')
-    if start_time_str:
-        try:
-            start_time = timezone.datetime.fromisoformat(start_time_str)
-            if timezone.is_naive(start_time):
-                start_time = make_aware(start_time)
-        except Exception:
-            start_time = timezone.now() - timedelta(minutes=3)
-    else:
-        start_time = timezone.now() - timedelta(minutes=3)  # fallback
+    result = get_object_or_404(QuizResult, id=result_id)
 
-    end_time = timezone.now()
-    time_taken = end_time - start_time
-
-    result = QuizResult.objects.create(
-        user=request.user,
-        quiz=quiz,
-        department=quiz.department,
-        score=score,
-        total_questions=total_questions,
-        time_taken=time_taken,
-        start_time=start_time,
-        end_time=end_time,
-        status='Pass' if score >= total_questions * 0.6 else 'Fail'
-    )
-
-    # Generate PDF with timestamps
-    generate_result_pdf(result)
-    result.refresh_from_db()
-
-    # Clean session
-    request.session.pop(f'quiz_{quiz_id}_score', None)
-    request.session.pop(f'quiz_{quiz_id}_start_time', None)
+    result.score = score
+    result.total_questions = total_questions
+    result.end_time = timezone.now()
+    result.time_taken = result.end_time - result.start_time
+    result.save()
 
     return render(request, 'quiz_result.html', {
-        'quiz': quiz,
-        'score': score,
-        'total_questions': total_questions,
-        'status': result.status,
-        'result': result,
+        'quiz': quiz, 'score': score, 'total_questions': total_questions,
+        'status': result.status, 'result': result
     })
 
-
+# ----------------- Dashboard -----------------
+from django.utils.timezone import localtime
 
 @login_required
 def dashboard_view(request):
-    if request.user.is_superuser or request.user.is_staff:
-        results = QuizResult.objects.all().order_by('-created_at')
-    else:
-        results = QuizResult.objects.filter(user=request.user).order_by('-created_at')
-    
-    return render(request, 'dashboard.html', {'results': results})
+    results = QuizResult.objects.all().order_by('-created_at') if request.user.is_staff else QuizResult.objects.filter(user=request.user).order_by('-created_at')
+
+    results_data = []
+    for result in results:
+        mcq_total = result.quiz.questions.filter(question_type='MCQ').count()
+        mcq_percent = (result.score / mcq_total) * 100 if mcq_total else 0
+
+        written_total = result.quiz.questions.filter(question_type='TEXT').count()
+        
+        written_answers = UserAnswer.objects.filter(
+            quiz_result=result,
+            question__question_type='TEXT'
+        )
+
+        graded_sum = sum(wa.grade for wa in written_answers if wa.grade is not None)
+        graded_count = written_answers.filter(grade__isnull=False).count()
+
+        written_percent = (graded_sum / (written_total * 100)) * 100 if written_total and graded_count == written_total else None
+
+        results_data.append({
+            'result': result,
+            'mcq_percent': mcq_percent,
+            'written_percent': written_percent,
+            'written_exists': written_total > 0,
+            'local_created_at': localtime(result.created_at),
+            'local_time_taken': result.time_taken,
+        })
+
+    return render(request, 'dashboard.html', {'results_data': results_data})
 
 
-# @login_required
-# def department_quizzes(request, department_id):
-#     department = get_object_or_404(Department, id=department_id)
-#     quizzes = QuizSet.objects.filter(department=department)
-#     return render(request, 'department_quizzes.html', {
-#         'department': department,
-#         'quizzes': quizzes
-#     })
-
-from .models import Department, QuizSet
+# ----------------- Department -----------------
 @login_required
 def department_quizzes(request, department_id):
     department = get_object_or_404(Department, id=department_id)
     quizzes = QuizSet.objects.filter(department=department)
-    departments = Department.objects.all()  
+    departments = Department.objects.all()
     return render(request, 'department_quizzes.html', {
-        'department': department,
-        'quizzes': quizzes,
-        'departments': departments  
+        'department': department, 'quizzes': quizzes, 'departments': departments
     })
 
 
-from django.utils.timezone import localtime
-from pytz import timezone as pytz_timezone
-
+# ----------------- PDF Generation -----------------
 def generate_result_pdf(result):
     buffer = BytesIO()
     p = canvas.Canvas(buffer)
 
-    # Local time in Tashkent
     tashkent_tz = pytz_timezone('Asia/Tashkent')
     start_local = localtime(result.start_time, tashkent_tz).strftime('%Y-%m-%d %H:%M:%S')
     end_local = localtime(result.end_time, tashkent_tz).strftime('%Y-%m-%d %H:%M:%S')
 
-    # PDF content
+    mcq_total = result.quiz.questions.filter(question_type='MCQ').count()
+    mcq_percent = (result.score / mcq_total) * 100 if mcq_total else 0
+
+    written_total = result.quiz.questions.filter(question_type='TEXT').count()
+    written_answers = UserAnswer.objects.filter(user=result.user, question__quiz_set=result.quiz, question__question_type='TEXT')
+    graded_sum = sum(wa.grade for wa in written_answers if wa.grade is not None)
+    written_percent = (graded_sum / (written_total * 100)) * 100 if written_total else 0
+
     p.drawString(100, 800, f"User: {result.user.username}")
     p.drawString(100, 780, f"Test: {result.quiz.title}")
-    p.drawString(100, 760, f"Score: {result.score}/{result.total_questions}")
-    p.drawString(100, 740, f"Percentage: {result.percentage():.2f}%")
+    p.drawString(100, 760, f"MCQ Score: {mcq_percent:.2f}%")
+    p.drawString(100, 740, f"Written Score: {written_percent:.2f}%" if written_total else "Written Score: N/A")
     p.drawString(100, 720, f"Status: {result.status}")
     p.drawString(100, 700, f"Time Taken: {result.time_taken}")
     p.drawString(100, 680, f"Start Time: {start_local} (UZ)")
@@ -189,48 +200,90 @@ def generate_result_pdf(result):
 
     p.showPage()
     p.save()
-
     buffer.seek(0)
+
     result.pdf_file.save(f"result_{result.id}.pdf", File(buffer))
     result.save()
 
+
+# ----------------- PDF Views -----------------
+@require_POST
+@login_required
+def generate_pdf(request, result_id):
+    if not request.user.is_staff:
+        return HttpResponseForbidden("Only staff can generate PDFs.")
+    result = get_object_or_404(QuizResult, id=result_id)
+    if result.status != "Pending":
+        generate_result_pdf(result)
+    return redirect('dashboard')
 
 
 @login_required
 def download_result_pdf(request, result_id):
     result = get_object_or_404(QuizResult, id=result_id)
-
-    if result.user == request.user or request.user.is_staff or request.user.is_superuser:
+    if request.user == result.user or request.user.is_staff:
         if result.pdf_file:
             return FileResponse(result.pdf_file.open(), as_attachment=True)
-        else:
-            raise Http404("No PDF available")
-    else:
-        return HttpResponseForbidden("You don't have permission to download this file.")
+    raise Http404("PDF not available")
 
 
-from django.views.decorators.http import require_POST
-from django.http import HttpResponseRedirect
-from django.urls import reverse
+# ----------------- Grading -----------------
+@login_required
+def grade_written_view(request, result_id):
+    if not request.user.is_staff:
+        return HttpResponseForbidden()
+
+    result = get_object_or_404(QuizResult, id=result_id)
+    
+    written_answers = UserAnswer.objects.filter(
+        quiz_result=result,
+        question__question_type='TEXT'
+    )
+
+    if request.method == 'POST':
+        for wa in written_answers:
+            grade_value = request.POST.get(f'grade_{wa.id}')
+            if grade_value is not None:
+                try:
+                    wa.grade = min(max(float(grade_value), 0), 100)
+                    wa.save()
+                except ValueError:
+                    pass  # ignore invalid input
+
+        return redirect('dashboard')
+
+    return render(request, 'grade_written.html', {
+        'result': result,
+        'written_answers': written_answers
+    })
+
+# ----------------- Status Change -----------------
 
 @require_POST
 @login_required
 def change_status(request, result_id):
-    if not request.user.is_staff and not request.user.is_superuser:
-        return HttpResponseForbidden("You don't have permission to change status.")
+    if not request.user.is_staff:
+        return HttpResponseForbidden()
 
     result = get_object_or_404(QuizResult, id=result_id)
     new_status = request.POST.get('status')
 
-    if new_status in ['Pass', 'Fail']:
+    if new_status in ['Pass', 'Fail', 'Pending']:
         result.status = new_status
+
+        if new_status == "Pending":
+            if result.pdf_file:
+                result.pdf_file.delete(save=False)
+            result.pdf_file = None
+        else:
+            generate_result_pdf(result)
+
         result.save()
 
     return HttpResponseRedirect(reverse('dashboard'))
 
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
 
+# ----------------- Info Page -----------------
 @login_required
 def platform_info_view(request):
     return render(request, 'platform_info.html')

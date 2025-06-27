@@ -106,8 +106,8 @@ LOCALE_PATHS = [
 
 USE_I18N = True
 USE_L10N = True
+TIME_ZONE = 'Asia/Tashkent'
 USE_TZ = True
-TIME_ZONE = 'UTC'
 
 # Static files
 STATIC_URL = '/static/'
