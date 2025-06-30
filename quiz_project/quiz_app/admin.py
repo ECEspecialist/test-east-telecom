@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.html import format_html
 from .models import Department, QuizSet, Question, Choice, QuizResult, UserAnswer
 
 
@@ -25,11 +26,10 @@ class QuestionAdmin(admin.ModelAdmin):
             obj.choices.all().delete()
 
     def image_preview(self, obj):
-        if obj.image:
-            return f'<img src="{obj.image.url}" style="max-height: 100px;" />'
+        if obj.image_name:
+            return format_html('<img src="{}" style="max-height: 100px;" />', obj.image_url())
         return "-"
-    image_preview.allow_tags = True
-    image_preview.short_description = "Image"
+    image_preview.short_description = "Image Preview"
 
 
 @admin.register(UserAnswer)

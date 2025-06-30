@@ -5,9 +5,9 @@
   <h2>{{ quiz.title }} - {% trans "Question" %} {{ question_number }} {% trans "of" %} {{ total_questions }}</h2>
   <p style="margin-top: 5px; margin-bottom: 5px;">{{ question.text }}</p>
 
-  {% if question.image %}
+  {% if question.image_name %}
     <div style="margin: 10px 0;">
-      <img src="{{ question.image.url }}" alt="Question Image" style="max-width: 300px; max-height: 300px;">
+      <img src="{{ question.image_url }}" alt="Question Image" style="max-width: 300px; max-height: 300px;">
     </div>
   {% endif %}
 

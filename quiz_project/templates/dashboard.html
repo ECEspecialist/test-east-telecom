@@ -17,8 +17,8 @@
         {% if request.user.is_staff %}<th>{% trans 'User' %}</th>{% endif %}
         <th>{% trans "Department" %}</th>
         <th>{% trans 'Test Title' %}</th>
-        <th>{% trans 'MCQ %' %}</th>
-        <th>{% trans 'Written %' %}</th>
+        <th>{% trans 'MCQ' %} %</th>
+        <th>{% trans 'Written' %} %</th>
         <th>{% trans 'Status' %}</th>
         <th>{% trans 'Time Taken' %}</th>
         <th>{% trans 'Timestamp' %}</th>
@@ -68,19 +68,19 @@
               <form method="post" action="{% url 'change_status' item.result.id %}">
                 {% csrf_token %}
                 <select name="status" onchange="this.form.submit()">
-                  <option value="Pending" {% if item.result.status == "Pending" %}selected{% endif %} style="color: gray;">Pending</option>
-                  <option value="Pass" {% if item.result.status == "Pass" %}selected{% endif %} style="color: green;">Pass</option>
-                  <option value="Fail" {% if item.result.status == "Fail" %}selected{% endif %} style="color: red;">Fail</option>
+                  <option value="Pending" {% if item.result.status == "Pending" %}selected{% endif %} style="color: gray;">{% trans 'Pending' %}</option>
+                  <option value="Pass" {% if item.result.status == "Pass" %}selected{% endif %} style="color: green;">{% trans 'Pass' %}</option>
+                  <option value="Fail" {% if item.result.status == "Fail" %}selected{% endif %} style="color: red;">{% trans 'Fail' %}</option>
                 </select>
               </form>
             {% endif %}
           {% else %}
             {% if item.result.status == "Pass" %}
-              <span style="color: green; font-weight: bold;">Pass ✅</span>
+              <span style="color: green; font-weight: bold;">{% trans 'Pass' %} ✅</span>
             {% elif item.result.status == "Fail" %}
-              <span style="color: red; font-weight: bold;">Fail ❌</span>
+              <span style="color: red; font-weight: bold;">{% trans 'Fail' %} ❌</span>
             {% else %}
-              <span style="color: gray; font-weight: bold;">Pending ⏳</span>
+              <span style="color: gray; font-weight: bold;">{% trans 'Pending' %} ⏳</span>
             {% endif %}
           {% endif %}
         </td>

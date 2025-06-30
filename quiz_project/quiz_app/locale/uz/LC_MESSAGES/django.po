@@ -217,3 +217,42 @@ msgstr "Tugatish"
 
 msgid "Next"
 msgstr "Keyingi"
+
+msgid "Waiting for evaluation"
+msgstr "Baholashni kutmoqda"
+
+msgid "Waiting for PDF"
+msgstr "PDF tayyorlanishini kutmoqda"
+
+msgid "Generate PDF"
+msgstr "PDF yaratish"
+
+msgid "Pending"
+msgstr "Kutilmoqda"
+
+msgid "Grade first"
+msgstr "Avval baholang"
+
+msgid "Grade"
+msgstr "Baho"
+
+msgid "Written"
+msgstr "Yozma"
+
+msgid "MCQ"
+msgstr "Test"
+
+msgid "Grade Written Answers"
+msgstr "Yozma javoblarni baholang"
+
+msgid "Student Answer"
+msgstr "Talabaning javobi"
+
+msgid "Grade (0-100)"
+msgstr "Baho (0-100)"
+
+msgid "Save Grades"
+msgstr "Baholarni saqlash"
+
+msgid "Not Graded"
+msgstr "Baholanmagan"

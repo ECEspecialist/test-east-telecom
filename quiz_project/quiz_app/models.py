@@ -1,9 +1,16 @@
-# models.py (Updated for Stable QuizResult Tracking)
-
+import os
 from django.utils.translation import gettext_lazy as _
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django.conf import settings
+
+def get_quiz_images():
+    images_dir = os.path.join(settings.BASE_DIR, 'quiz_app', 'static', 'quiz_images')
+    try:
+        return [(filename, filename) for filename in os.listdir(images_dir) if filename.lower().endswith(('.png', '.jpg', '.jpeg', '.gif'))]
+    except FileNotFoundError:
+        return []
 
 class Department(models.Model):
     name = models.CharField("Department Name", max_length=100)
@@ -28,11 +35,16 @@ class Question(models.Model):
 
     quiz_set = models.ForeignKey(QuizSet, on_delete=models.CASCADE, related_name='questions')
     text = models.TextField("Question Text")
-    image = models.ImageField("Optional Image", upload_to='question_images/', null=True, blank=True)
+    image_name = models.CharField("Optional Image", max_length=255, choices=get_quiz_images, blank=True, null=True)
     question_type = models.CharField("Question Type", max_length=10, choices=QUESTION_TYPES, default='MCQ')
 
     def __str__(self):
         return self.text
+
+    def image_url(self):
+        if self.image_name:
+            return f"/static/quiz_images/{self.image_name}"
+        return ""
 
 
 class QuizResult(models.Model):

@@ -217,3 +217,42 @@ msgstr "Завершить"
 
 msgid "Next"
 msgstr "Далее"
+
+msgid "Waiting for evaluation"
+msgstr "Ожидание оценки"
+
+msgid "Waiting for PDF"
+msgstr "Ожидание PDF"
+
+msgid "Generate PDF"
+msgstr "Создать PDF"
+
+msgid "Pending"
+msgstr "В ожидании"
+
+msgid "Grade first"
+msgstr "Сначала оцените"
+
+msgid "Grade"
+msgstr "Оценка"
+
+msgid "Written"
+msgstr "Письменный"
+
+msgid "MCQ"
+msgstr "Тест"
+
+msgid "Grade Written Answers"
+msgstr "Оцените письменные ответы"
+
+msgid "Student Answer"
+msgstr "Ответ студента"
+
+msgid "Grade (0-100)"
+msgstr "Оценка (0-100)"
+
+msgid "Save Grades"
+msgstr "Сохранить оценки"
+
+msgid "Not Graded"
+msgstr "Не оценено"
