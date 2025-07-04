@@ -17,9 +17,9 @@ class Department(models.Model):
 
     @property
     def translated_name(self):
-        if self.name == "Network Team Tests":
+        if self.name == "Network team tests":
             return _("Network team tests")
-        elif self.name == "Facility Team Tests":
+        elif self.name == "Facility team tests":
             return _("Facility team tests")
         return self.name  # Fallback for other departments
 
