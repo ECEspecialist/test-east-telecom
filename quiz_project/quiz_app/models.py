@@ -15,8 +15,17 @@ def get_quiz_images():
 class Department(models.Model):
     name = models.CharField("Department Name", max_length=100)
 
+    @property
+    def translated_name(self):
+        if self.name == "Network Team Tests":
+            return _("Network Team Tests")
+        elif self.name == "Facility Team Tests":
+            return _("Facility Team Tests")
+        return self.name  # Fallback for other departments
+
     def __str__(self):
-        return self.name
+        return self.translated_name
+
 
 
 class QuizSet(models.Model):

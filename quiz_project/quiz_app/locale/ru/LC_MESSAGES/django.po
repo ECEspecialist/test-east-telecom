@@ -277,3 +277,12 @@ msgstr "Письменный тест еще не оценен."
 
 msgid "No written test submitted."
 msgstr "Письменный тест не был сдан."
+
+msgid "Your Answer"
+msgstr "Ваш ответ"
+
+msgid "Network Team Tests"
+msgstr "Тесты сетевой команды"
+
+msgid "Facility Team Tests"
+msgstr "Тесты команды эксплуатации"

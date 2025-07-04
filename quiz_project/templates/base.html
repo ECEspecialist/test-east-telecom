@@ -109,9 +109,10 @@
                 {% if request.path == '/department/'|add:department.id|stringformat:"s"|add:'/quizzes/' %}
                     style="font-weight:bold;"
                 {% endif %}>
-                {{ department.name }}
+                    {{ department.translated_name }}
                 </a>
             {% endfor %}
+
         </div>
         <a href="{% url 'platform_info' %}"
             {% if request.path == '/platform-info/' %}style="font-weight:bold;"{% endif %}>
