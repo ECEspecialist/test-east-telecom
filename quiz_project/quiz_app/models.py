@@ -18,13 +18,14 @@ class Department(models.Model):
     @property
     def translated_name(self):
         if self.name == "Network Team Tests":
-            return _("Network Team Tests")
+            return _("Network team tests")
         elif self.name == "Facility Team Tests":
-            return _("Facility Team Tests")
+            return _("Facility team tests")
         return self.name  # Fallback for other departments
 
     def __str__(self):
-        return self.translated_name
+        return str(self.translated_name)  # Force lazy translation to string
+
 
 
 

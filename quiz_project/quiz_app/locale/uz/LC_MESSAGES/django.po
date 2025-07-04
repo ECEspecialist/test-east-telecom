@@ -281,8 +281,8 @@ msgstr "Yozma test topshirilmagan."
 msgid "Your Answer"
 msgstr "Sizning javobingiz"
 
-msgid "Network Team Tests"
+msgid "Network team tests"
 msgstr "Tarmoq jamoasi testlari"
 
-msgid "Facility Team Tests"
+msgid "Facility team tests"
 msgstr "Texnik xizmat jamoasi testlari"
