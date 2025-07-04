@@ -1,15 +1,46 @@
 {% extends 'base.html' %}
 {% load i18n %}
+
 {% block content %}
-  <h2 style="color: black;" >{% trans 'Test Result' %}: {{ quiz.title }}</h2>
-  <p style="color: black;" >{% trans 'Your score' %}: {{ score }} / {{ total_questions }}</p>
+<h2 style="color: black;">{% trans 'Test Result' %}: {{ quiz.title }}</h2>
+<br>
+<!-- MCQ Section -->
+<h3 style="color: black;">{% trans 'MCQ Test Result' %}</h3>
 
-  {% if result.pdf_file %}
-      <a style="color: black;" href="{% url 'download_result_pdf' result.id %}">{% trans 'Download PDF' %}</a>
-  {% else %}
-      <span style="color: black;">{% trans 'No PDF available yet.' %}</span>
-  {% endif %}
+<p style="color: black;">
+    {% trans 'MCQ Percentage' %}: {{ mcq_percent|floatformat:2 }}%
+</p>
 
-  <br>
-  <a href="{% url 'dashboard' %}" style="color: black;">{% trans 'Back to Dashboard' %}</a>
+<br>
+
+<!-- Written Section -->
+<h3 style="color: black;">{% trans 'Written Test Result' %}</h3>
+{% if written_exists %}
+    {% if written_percent is not None %}
+        <p style="color: black;">
+            {% trans 'Your Written Test Score' %}: {{ written_percent|floatformat:2 }}%
+        </p>
+    {% else %}
+        <p style="color: red; font-weight: bold;">
+            {% trans 'Written test not graded yet.' %}
+        </p>
+    {% endif %}
+{% else %}
+    <p style="color: gray;">
+        {% trans 'No written test submitted.' %}
+    </p>
+{% endif %}
+
+<br>
+
+<!-- PDF Download -->
+{% if result.pdf_file %}
+    <a style="color: black;" href="{% url 'download_result_pdf' result.id %}">{% trans 'Download PDF' %}</a>
+{% else %}
+    <span style="color: black;">{% trans 'No PDF available yet.' %}</span>
+{% endif %}
+
+<br><br>
+<a href="{% url 'dashboard' %}" style="color: black;">{% trans 'Back to Dashboard' %}</a>
+
 {% endblock %}

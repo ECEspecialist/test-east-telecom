@@ -256,3 +256,24 @@ msgstr "Сохранить оценки"
 
 msgid "Not Graded"
 msgstr "Не оценено"
+
+msgid "MCQ Test Result"
+msgstr "Результат теста с выбором ответа"
+
+msgid "Correct Answers"
+msgstr "Правильные ответы"
+
+msgid "MCQ Percentage"
+msgstr "Процент правильных ответов"
+
+msgid "Written Test Result"
+msgstr "Результат письменного теста"
+
+msgid "Your Written Test Score"
+msgstr "Ваш результат письменного теста"
+
+msgid "Written test not graded yet."
+msgstr "Письменный тест еще не оценен."
+
+msgid "No written test submitted."
+msgstr "Письменный тест не был сдан."

@@ -256,3 +256,24 @@ msgstr "Baholarni saqlash"
 
 msgid "Not Graded"
 msgstr "Baholanmagan"
+
+msgid "MCQ Test Result"
+msgstr "Test natijasi (variant tanlash)"
+
+msgid "Correct Answers"
+msgstr "To'g'ri javoblar"
+
+msgid "MCQ Percentage"
+msgstr "To'g'rilik foizi"
+
+msgid "Written Test Result"
+msgstr "Yozma test natijasi"
+
+msgid "Your Written Test Score"
+msgstr "Sizning yozma test natijangiz"
+
+msgid "Written test not graded yet."
+msgstr "Yozma test hali baholanmagan."
+
+msgid "No written test submitted."
+msgstr "Yozma test topshirilmagan."

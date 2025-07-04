@@ -13,6 +13,7 @@ from io import BytesIO
 from reportlab.pdfgen import canvas
 from datetime import timedelta
 
+from django.contrib import messages
 from .models import QuizSet, Question, Choice, QuizResult, Department, UserAnswer
 from django.views.decorators.http import require_POST
 
@@ -103,13 +104,17 @@ def quiz_question(request, quiz_id, question_number):
         'quiz': quiz, 'question': question, 'question_number': question_number, 'total_questions': questions.count()
     })
 
-
 @login_required
 def quiz_result(request, quiz_id):
     quiz = get_object_or_404(QuizSet, id=quiz_id)
     score = request.session.pop(f'quiz_{quiz_id}_score', 0)
-    result_id = request.session.pop(f'quiz_{quiz_id}_result_id', None)
+    result_id = request.session.get(f'quiz_{quiz_id}_result_id')
+
     total_questions = quiz.questions.count()
+
+    if not result_id:
+        messages.error(request, _("Session expired or invalid access. Please retake the quiz."))
+        return redirect('dashboard')
 
     result = get_object_or_404(QuizResult, id=result_id)
 
@@ -119,10 +124,39 @@ def quiz_result(request, quiz_id):
     result.time_taken = result.end_time - result.start_time
     result.save()
 
+    # Optional: Clean session after final load, if needed:
+    if request.method == "POST" or request.GET.get("final", "") == "true":
+        request.session.pop(f'quiz_{quiz_id}_result_id', None)
+
+    # MCQ and Written calculations...
+    mcq_total = result.quiz.questions.filter(question_type='MCQ').count()
+    mcq_percent = (result.score / mcq_total) * 100 if mcq_total else 0
+
+    written_total = result.quiz.questions.filter(question_type='TEXT').count()
+    written_answers = UserAnswer.objects.filter(
+        quiz_result=result,
+        question__question_type='TEXT'
+    )
+
+    graded_sum = sum(wa.grade for wa in written_answers if wa.grade is not None)
+    graded_count = written_answers.filter(grade__isnull=False).count()
+
+    written_percent = (
+        (graded_sum / (written_total * 100)) * 100
+        if written_total and graded_count == written_total else None
+    )
+
     return render(request, 'quiz_result.html', {
-        'quiz': quiz, 'score': score, 'total_questions': total_questions,
-        'status': result.status, 'result': result
+        'quiz': quiz,
+        'score': score,
+        'total_questions': total_questions,
+        'status': result.status,
+        'result': result,
+        'mcq_percent': mcq_percent,
+        'written_percent': written_percent,
+        'written_exists': written_total > 0
     })
+
 
 # ----------------- Dashboard -----------------
 from django.utils.timezone import localtime
