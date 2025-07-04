@@ -31,7 +31,7 @@
         {% if request.user.is_staff %}
         <td>{{ item.result.user.username }}</td>
         {% endif %}
-        <td>{{ item.result.department.name }}</td>
+        <td>{{ item.result.department.translated_name }}</td>
         <td>{{ item.result.quiz.title }}</td>
 
         <td>
@@ -44,7 +44,7 @@
 
         <td>
           {% if not item.written_exists %}
-            <span style="color: gray;">N/A</span>
+            <span style="color: gray;">{% trans 'N/A' %}</span>
           {% else %}
             {% if item.written_percent is None %}
               <span style="color: red; font-weight: bold;">{% trans 'Not Graded' %} 🔴</span>

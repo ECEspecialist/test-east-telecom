@@ -91,15 +91,6 @@ msgstr "Хозяйственный отдел"
 msgid "Welcome"
 msgstr "Добро пожаловать"
 
-msgid "English"
-msgstr "Английский"
-
-msgid "Uzbek"
-msgstr "Узбекский"
-
-msgid "Russian"
-msgstr "Русский"
-
 msgid "Logout"
 msgstr "Выйти"
 
@@ -286,3 +277,9 @@ msgstr "Тесты сетевой команды"
 
 msgid "Facility team tests"
 msgstr "Тесты команды эксплуатации"
+
+msgid "N/A"
+msgstr "Нет данных"  # Стандартное сокращение «Нет данных»
+
+msgid "No MCQ test submitted."
+msgstr "Тест с выбором ответа не отправлен"

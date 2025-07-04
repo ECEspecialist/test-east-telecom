@@ -154,7 +154,8 @@ def quiz_result(request, quiz_id):
         'result': result,
         'mcq_percent': mcq_percent,
         'written_percent': written_percent,
-        'written_exists': written_total > 0
+        'written_exists': written_total > 0,
+        'mcq_exists': mcq_total > 0
     })
 
 

@@ -87,15 +87,6 @@ msgstr "Qurilish jamoasi"
 msgid "Welcome"
 msgstr "Xush kelibsiz"
 
-msgid "English"
-msgstr "Inglizcha"
-
-msgid "Uzbek"
-msgstr "O‘zbekcha"
-
-msgid "Russian"
-msgstr "Ruscha"
-
 msgid "Logout"
 msgstr "Chiqish"
 
@@ -286,3 +277,9 @@ msgstr "Tarmoq jamoasi testlari"
 
 msgid "Facility team tests"
 msgstr "Texnik xizmat jamoasi testlari"
+
+msgid "N/A"
+msgstr "Mavjud emas"
+
+msgid "No MCQ test submitted."
+msgstr "MCQ testi yuborilmagan"  # Uzbek

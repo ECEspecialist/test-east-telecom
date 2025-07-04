@@ -4,17 +4,25 @@
 {% block content %}
 <h2 style="color: black;">{% trans 'Test Result' %}: {{ quiz.title }}</h2>
 <br>
+
 <!-- MCQ Section -->
 <h3 style="color: black;">{% trans 'MCQ Test Result' %}</h3>
 
-<p style="color: black;">
-    {% trans 'MCQ Percentage' %}: {{ mcq_percent|floatformat:2 }}%
-</p>
+{% if mcq_exists %}
+    <p style="color: black;">
+        {% trans 'MCQ Percentage' %}: {{ mcq_percent|floatformat:2 }}%
+    </p>
+{% else %}
+    <p style="color: gray;">
+        {% trans 'No MCQ test submitted.' %}
+    </p>
+{% endif %}
 
 <br>
 
 <!-- Written Section -->
 <h3 style="color: black;">{% trans 'Written Test Result' %}</h3>
+
 {% if written_exists %}
     {% if written_percent is not None %}
         <p style="color: black;">
@@ -42,5 +50,4 @@
 
 <br><br>
 <a href="{% url 'dashboard' %}" style="color: black;">{% trans 'Back to Dashboard' %}</a>
-
 {% endblock %}

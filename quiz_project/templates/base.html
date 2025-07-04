@@ -87,13 +87,6 @@
     </style>
 </head>
 <body>
-
-    <!-- <div class="sidebar">
-        <img src="/static/images/company_logo_white.png" class="company_logo_sidebar" alt="Company Logo">
-        <a href="{% url 'dashboard' %}" {% if request.path == '/dashboard/' %}style="font-weight:bold;"{% endif %}>{% trans "Dashboard" %}</a>
-        <a href="{% url 'department_quizzes' 1 %}" {% if request.path == '/department/1/quizzes/' %}style="font-weight:bold;"{% endif %}>{% trans "Network team" %}</a>
-        <a href="{% url 'department_quizzes' 2 %}" {% if request.path == '/department/2/quizzes/' %}style="font-weight:bold;"{% endif %}>{% trans "Facility team" %}</a>
-    </div> -->
     
     <div class="sidebar">
         <div class="sidebar-top">
@@ -130,9 +123,9 @@
                     {% csrf_token %}
                     <select name="language" onchange="document.getElementById('language-form').submit();">
                         {% get_current_language as LANGUAGE_CODE %}
-                        <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>{% trans "English" %}</option>
-                        <option value="uz" {% if LANGUAGE_CODE == 'uz' %}selected{% endif %}>{% trans "Uzbek" %}</option>
-                        <option value="ru" {% if LANGUAGE_CODE == 'ru' %}selected{% endif %}>{% trans "Russian" %}</option>
+                        <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>English</option>
+                        <option value="uz" {% if LANGUAGE_CODE == 'uz' %}selected{% endif %}>O‘zbekcha</option>
+                        <option value="ru" {% if LANGUAGE_CODE == 'ru' %}selected{% endif %}>Русский</option>
                     </select>
                 </form>
 
