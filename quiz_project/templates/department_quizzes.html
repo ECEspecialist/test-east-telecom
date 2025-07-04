@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load i18n %}
 {% block content %}
-  <h2 style="color: black;">{{ department.name }} - {% trans 'Test Sets' %}</h2>
+  <h2 style="color: black;">{{ department.translated_name }} - {% trans 'Test Sets' %}</h2>
   {% if quizzes %}
     <ul style="color: black;">
       {% for quiz in quizzes %}
